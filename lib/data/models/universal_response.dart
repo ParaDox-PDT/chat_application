@@ -1,5 +1,5 @@
-class UniversalResponse {
-  UniversalResponse({
+class UniversalData {
+  UniversalData({
     this.error = "",
     this.data,
   });

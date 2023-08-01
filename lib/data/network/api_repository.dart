@@ -8,7 +8,7 @@ class ApiRepository{
   ApiRepository({required this.apiProvider});
 
   Future<List<DefaultModel>> fetchDefaultModelData()async{
-    UniversalResponse universalResponse=await apiProvider.getAllData();
+    UniversalData universalResponse=await apiProvider.getAllData();
     if(universalResponse.error.isEmpty){
       return universalResponse.data as  List<DefaultModel>;
     }

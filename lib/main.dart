@@ -1,37 +1,37 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_defualt_project/data/firebase/auth_service.dart';
+import 'package:flutter_defualt_project/data/firebase/profile_service.dart';
+import 'package:flutter_defualt_project/provider/auth_provider.dart';
+import 'package:flutter_defualt_project/provider/profile_provider.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/utils/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
-
-
-import 'data/local/service/hive_service.dart';
 import 'data/local/storage_repository/storage_repository.dart';
-import 'data/models/default_model.dart';
-
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
   await StorageRepository.getInstance();
-
-  await Hive.initFlutter();
-  Hive.registerAdapter(DefaultModelAdapter());
-  await HiveService.openBox();
-
+  await Firebase.initializeApp();
 
   runApp(
-    EasyLocalization(
-      supportedLocales: const [
-        Locale('en', 'EN'),
-        Locale('uz', 'UZ'),
-        Locale('ru', 'RU'),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(
+            firebaseService: AuthService(),
+          ),
+          lazy: true,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileProvider(
+            profileService: ProfileService(),
+          ),
+          lazy: true,
+        )
       ],
-      fallbackLocale: const Locale('en', 'EN'),
-      path: 'assets/translations',
       child: const MyApp(),
     ),
   );
@@ -43,19 +43,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(393, 783),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context , child) {
+      builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.dark,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          initialRoute: RouteNames.homeScreen,
+          initialRoute: RouteNames.splashScreen,
           onGenerateRoute: AppRoutes.generateRoute,
         );
       },

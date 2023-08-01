@@ -8,7 +8,7 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.black,
     appBarTheme: const AppBarTheme(
-      elevation: 0,
+      elevation: 10,
       backgroundColor: AppColors.black,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: AppColors.black,
