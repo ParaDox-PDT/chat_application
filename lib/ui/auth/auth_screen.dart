@@ -11,10 +11,11 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool isLoginPage = true;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(isLoginPage ? "Login" : "Sign Up"),
         elevation: 10,
@@ -32,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 setState(() {
                   isLoginPage = true;
                 });
-              },
+              }, parentContext: _scaffoldKey.currentContext!,
             ),
     );
   }

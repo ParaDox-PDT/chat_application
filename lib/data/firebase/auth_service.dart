@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_defualt_project/data/models/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/universal_response.dart';
@@ -11,6 +13,28 @@ class AuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
       return UniversalData(data: userCredential);
     } on FirebaseAuthException catch (e) {
+      return UniversalData(error: e.code);
+    } catch (error) {
+      return UniversalData(error: error.toString());
+    }
+  }
+
+  Future<UniversalData> addUser(
+      {required UserModel userModel}) async {
+    try {
+      DocumentReference newUser = await FirebaseFirestore.instance
+          .collection("users")
+          .add(userModel.toJson());
+
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(newUser.id)
+          .update({
+        "userId": newUser.id,
+      });
+
+      return UniversalData(data: "User added!");
+    } on FirebaseException catch (e) {
       return UniversalData(error: e.code);
     } catch (error) {
       return UniversalData(error: error.toString());

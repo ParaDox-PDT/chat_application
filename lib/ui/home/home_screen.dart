@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: (){
             context.read<AuthProvider>().logOutUser(context);
           },
-          child: Text("Log Out",style: Theme.of(context).textTheme.titleLarge,),
+          child: Text("Log Out",style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.black),),
         ),
       ),
     );

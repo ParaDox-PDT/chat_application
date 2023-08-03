@@ -15,7 +15,7 @@ class GlobalTextField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
-        color: Colors.grey,
+        color: AppColors.white,
       ),
       child: TextField(
         controller: controller,
@@ -34,23 +34,23 @@ class GlobalTextField extends StatelessWidget {
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(
-                    width: 1, color: AppColors.white)),
+                    width: 1, color: AppColors.black)),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(
-                    width: 1, color: AppColors.white)),
+                    width: 1, color: AppColors.black)),
             errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(
-                    width: 1, color: AppColors.white)),
+                    width: 1, color: AppColors.black)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(
-                    width: 1, color: AppColors.white)),
+                    width: 1, color: AppColors.black)),
             focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(
-                    width: 1, color: AppColors.white))),
+                    width: 1, color: AppColors.black))),
       ),
     );
   }

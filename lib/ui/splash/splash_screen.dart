@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Splash Screen"
+          "Splash Screen",style: TextStyle(color: Colors.black),
         ),
       ),
     );
