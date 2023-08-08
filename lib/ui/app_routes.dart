@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_defualt_project/app/app.dart';
+import 'package:flutter_defualt_project/data/models/news_model.dart';
 import 'package:flutter_defualt_project/ui/auth/auth_screen.dart';
 import 'package:flutter_defualt_project/ui/home/home_screen.dart';
+import 'package:flutter_defualt_project/ui/news_detail/news_detail_screen.dart';
 import 'package:flutter_defualt_project/ui/splash/splash_screen.dart';
 
 class RouteNames {
@@ -9,6 +11,7 @@ class RouteNames {
   static const String authScreen = "/auth_screen";
   static const String splashScreen = "/";
   static const String appScreen = "/app_screen";
+  static const String newsDetail = "/news_detail";
 }
 
 class AppRoutes {
@@ -17,6 +20,13 @@ class AppRoutes {
       case RouteNames.appScreen:
         return MaterialPageRoute(
           builder: (context) => const App(),
+        );
+      case RouteNames.newsDetail:
+        return MaterialPageRoute(
+          builder: (context) {
+            Map<String,dynamic> map = settings.arguments as Map<String,dynamic>;
+            return NewsDetailScreen(newsModel: map["model"],index: map["index"],);
+          },
         );
       case RouteNames.splashScreen:
         return MaterialPageRoute(

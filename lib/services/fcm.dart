@@ -32,9 +32,6 @@ Future<void> initFirebase() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   handelMessage(RemoteMessage message) {
-    debugPrint(
-        "NOTIFICATION FROM TERMINATED MODE: ${message.data["title"]} va ${message.notification!.title} in terminated");
-    LocalNotificationService.instance.showFlutterNotification(message);
     newsProvider.insertNews(newsModel: NewsModel(
       newsTitle: message.notification?.title ?? "",
       newsBody: message.notification?.body ?? "",
@@ -43,7 +40,10 @@ Future<void> initFirebase() async {
       newsDataImg: message.data["image"],
       newsDataDatetime: DateTime.now().toString(),
     ),);
-    newsProvider.getNews();
+    debugPrint(
+        "NOTIFICATION FROM TERMINATED MODE: ${message.data["title"]} va ${message.notification!.title} in terminated");
+    LocalNotificationService.instance.showFlutterNotification(message);
+
   }
 
   RemoteMessage? remoteMessage =
@@ -57,8 +57,9 @@ Future<void> initFirebase() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  NewsProvider newsProvider = NewsProvider.instance;
   await Firebase.initializeApp();
-  NewsProvider newsProvider=NewsProvider.instance;
+  LocalNotificationService.instance.showFlutterNotification(message);
   newsProvider.insertNews(newsModel: NewsModel(
     newsTitle: message.notification?.title ?? "",
     newsBody: message.notification?.body ?? "",

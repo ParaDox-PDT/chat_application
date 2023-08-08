@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
-
+import 'package:flutter_defualt_project/utils/colors.dart';
+import 'package:flutter_defualt_project/utils/images.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,17 +13,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  _init() async {
+    await Future.delayed(const Duration(seconds: 3));
 
-  _init()async{
-    await Future.delayed(Duration(seconds: 3));
-
-    if(context.mounted){
+    if (context.mounted) {
       Navigator.pushReplacementNamed(context, RouteNames.homeScreen);
     }
   }
 
   @override
-  void initState(){
+  void initState() {
     _init();
     super.initState();
   }
@@ -28,11 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          "Splash Screen",style: TextStyle(color: Colors.black),
-        ),
+      appBar: AppBar(
+        toolbarHeight: 0,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: AppColors.white,statusBarIconBrightness:Brightness.dark),
+        elevation: 0,
       ),
+      body: Center(child: Lottie.asset(AppImages.splashLogo)),
     );
   }
 }
