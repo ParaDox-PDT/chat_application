@@ -1,4 +1,5 @@
 
+import 'package:flutter_defualt_project/data/models/news_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -35,34 +36,64 @@ class LocalDatabase{
     const textType = "TEXT NOT NULL";
     const intType = "INTEGER DEFAULT 0";
 
-
     await db.execute('''
-    CREATE TABLE ${DefaultModelFields.defaultTable}(
-    ${DefaultModelFields.id} $idType,
-    ${DefaultModelFields.id} $intType,
-    ${DefaultModelFields.name} $textType,
-    )
+    CREATE TABLE ${NewsModelFields.newsTable}(
+    ${NewsModelFields.id} $idType,
+    ${NewsModelFields.newsTitle} $textType,
+    ${NewsModelFields.newsBody} $textType,
+    ${NewsModelFields.newsDataTitle} $textType,
+    ${NewsModelFields.newsDataBody} $textType,
+    ${NewsModelFields.newsDataImg} $textType,
+    ${NewsModelFields.newsDataDatetime} $textType
+    );
     ''');
+    // await db.execute('''
+    // CREATE TABLE ${ProductModelFields.favorites} (
+    // ${ProductModelFields.id} $idType,
+    // ${ProductModelFields.productId} $intType,
+    // ${ProductModelFields.price} $intType,
+    // ${ProductModelFields.count} $intType,
+    // ${ProductModelFields.name} $textType,
+    // ${ProductModelFields.imageUrl} $textType
+    // );
+    // ''');
   }
-
-  static Future<DefaultModel> insertContact(
-      DefaultModel defaultModel) async {
+//-------------------------------NEWS SERVICE------------------------------------------
+  static Future<NewsModel> insertNews(NewsModel newsModel) async {
     final db = await getInstance.database;
     final int id = await db.insert(
-        DefaultModelFields.defaultTable, defaultModel.toJson());
-    return defaultModel.copyWith(id: id);
+        NewsModelFields.newsTable, newsModel.toJson());
+    return newsModel.copyWith(id: id);
   }
 
-  static Future<List<DefaultModel>> getAllContacts() async {
-    List<DefaultModel> allInfo = [];
+  static Future<List<NewsModel>> getAllNews() async {
+    List<NewsModel> allNews = [];
     final db = await getInstance.database;
-    allInfo = (await db.query(DefaultModelFields.defaultTable))
-        .map((e) => DefaultModel.fromJson(e))
+    allNews = (await db.query(NewsModelFields.newsTable))
+        .map((e) => NewsModel.fromJson(e))
         .toList();
 
-    return allInfo;
+    return allNews;
   }
 
+  static deleteNew(int id) async {
+    final db = await getInstance.database;
+    db.delete(
+      NewsModelFields.newsTable,
+      where: "${NewsModelFields.id} = ?",
+      whereArgs: [id],
+    );
+  }
+
+  static deleteAllNews() async {
+    final db = await getInstance.database;
+    db.delete(
+      NewsModelFields.newsTable,
+    );
+  }
+
+
+//-------------------------------CONTACT SERVICE------------------------------------------
   static Future<List<DefaultModel>> getContactsByAlphabet(
       String order) async {
     List<DefaultModel> allToDos = [];
@@ -94,21 +125,7 @@ class LocalDatabase{
     );
   }
 
-  static deleteContact(int id) async {
-    final db = await getInstance.database;
-    db.delete(
-      DefaultModelFields.defaultTable,
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [id],
-    );
-  }
 
-  static deleteAllInfo() async {
-    final db = await getInstance.database;
-    db.delete(
-      DefaultModelFields.defaultTable,
-    );
-  }
 
   static Future<List<DefaultModel>> getInfoByLimit(int limit) async {
     List<DefaultModel> allToDos = [];

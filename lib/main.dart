@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_defualt_project/data/firebase/auth_service.dart';
 import 'package:flutter_defualt_project/data/firebase/profile_service.dart';
 import 'package:flutter_defualt_project/provider/auth_provider.dart';
+import 'package:flutter_defualt_project/provider/news_provider.dart';
 import 'package:flutter_defualt_project/provider/profile_provider.dart';
+import 'package:flutter_defualt_project/services/fcm.dart';
+import 'package:flutter_defualt_project/services/local_notification_service.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/utils/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +18,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageRepository.getInstance();
   await Firebase.initializeApp();
+
+  await initFirebase();
+  await LocalNotificationService.instance.setupFlutterNotifications();
 
   runApp(
     MultiProvider(
@@ -30,7 +36,11 @@ Future<void> main() async {
             profileService: ProfileService(),
           ),
           lazy: true,
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NewsProvider.instance,
+          lazy: true,
+        ),
       ],
       child: const MyApp(),
     ),
