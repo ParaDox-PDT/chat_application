@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_defualt_project/data/models/news_model.dart';
 import 'package:flutter_defualt_project/provider/news_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   NewsDetailScreen({super.key, required this.newsModel, required this.index});
@@ -19,74 +21,75 @@ class NewsDetailScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: SizedBox(
-                          height: 125.h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Delete This New",
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Text(
-                                "Are you sure you want to delete this New!",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("No")),
-                                  TextButton(
-                                      onPressed: () {
-                                        context
-                                            .read<NewsProvider>()
-                                            .deleteNews(id: newsModel.id ?? 0);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    "New success deleted!")));
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(
-                                        "Yes",
-                                        style: TextStyle(color: Colors.red),
-                                      )),
-                                ],
-                              )
-                            ],
-                          ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: SizedBox(
+                        height: 125.h,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Delete This New",
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Roboto"),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              "Are you sure you want to delete this New!",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "Roboto"),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("No")),
+                                TextButton(
+                                    onPressed: () {
+                                      context
+                                          .read<NewsProvider>()
+                                          .deleteNews(id: newsModel.id ?? 0);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "New success deleted!")));
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      "Yes",
+                                      style: TextStyle(color: Colors.red),
+                                    )),
+                              ],
+                            )
+                          ],
                         ),
-                      );
-                    });
-              },
-              icon: Icon(
-                Icons.delete,
-                color: Colors.red,
-              ))
+                      ),
+                    );
+                  });
+            },
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+          )
         ],
       ),
       body: Padding(
@@ -104,9 +107,24 @@ class NewsDetailScreen extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
-              Hero(
-                tag: index,
-                child: CachedNetworkImage(imageUrl: newsModel.newsDataImg),
+              ZoomTapAnimation(
+                onTap: () {
+                  showDialog(
+                    barrierColor:Colors.black87 ,
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        backgroundColor: Colors.transparent,
+                        child:
+                        PhotoView(imageProvider: NetworkImage(newsModel.newsDataImg),backgroundDecoration: const BoxDecoration(color: Colors.transparent),),
+                      );
+                    },
+                  );
+                },
+                child: Hero(
+                  tag: index,
+                  child: CachedNetworkImage(imageUrl: newsModel.newsDataImg),
+                ),
               ),
               SizedBox(
                 height: 20.h,
