@@ -64,7 +64,6 @@ class NewsModel {
   Map<String, dynamic> toJson() {
     return {
       'newsTitle': newsTitle,
-      'id': id,
       'newsBody': newsBody,
       'newsDataTitle': newsDataTitle,
       'newsDataBody': newsDataBody,

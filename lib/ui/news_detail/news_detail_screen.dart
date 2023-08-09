@@ -25,7 +25,7 @@ class NewsDetailScreen extends StatelessWidget {
                     builder: (context) {
                       return AlertDialog(
                         content: SizedBox(
-                          height: 110.h,
+                          height: 125.h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

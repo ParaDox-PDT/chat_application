@@ -7,8 +7,8 @@ class ApiRepository{
   final ApiProvider apiProvider;
   ApiRepository({required this.apiProvider});
 
-  Future<List<DefaultModel>> fetchDefaultModelData()async{
-    UniversalData universalResponse=await apiProvider.getAllData();
+  Future<List<DefaultModel>> postNotification({required String title,required String description,required String image,})async{
+    UniversalData universalResponse=await apiProvider.postNotification(title: title, description: description, image: image);
     if(universalResponse.error.isEmpty){
       return universalResponse.data as  List<DefaultModel>;
     }

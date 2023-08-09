@@ -47,16 +47,6 @@ class LocalDatabase{
     ${NewsModelFields.newsDataDatetime} $textType
     );
     ''');
-    // await db.execute('''
-    // CREATE TABLE ${ProductModelFields.favorites} (
-    // ${ProductModelFields.id} $idType,
-    // ${ProductModelFields.productId} $intType,
-    // ${ProductModelFields.price} $intType,
-    // ${ProductModelFields.count} $intType,
-    // ${ProductModelFields.name} $textType,
-    // ${ProductModelFields.imageUrl} $textType
-    // );
-    // ''');
   }
 //-------------------------------NEWS SERVICE------------------------------------------
   static Future<NewsModel> insertNews(NewsModel newsModel) async {
@@ -90,81 +80,5 @@ class LocalDatabase{
     db.delete(
       NewsModelFields.newsTable,
     );
-  }
-
-
-//-------------------------------CONTACT SERVICE------------------------------------------
-  static Future<List<DefaultModel>> getContactsByAlphabet(
-      String order) async {
-    List<DefaultModel> allToDos = [];
-    final db = await getInstance.database;
-    allToDos = (await db.query(DefaultModelFields.defaultTable,
-        orderBy: "${DefaultModelFields.name} $order"))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-    return allToDos;
-  }
-
-  static updateContactName({required int id, required String name}) async {
-    final db = await getInstance.database;
-    db.update(
-      DefaultModelFields.defaultTable,
-      {DefaultModelFields.name: name},
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [id],
-    );
-  }
-
-  static updateInfo({required DefaultModel defaultModel}) async {
-    final db = await getInstance.database;
-    db.update(
-      DefaultModelFields.defaultTable,
-      defaultModel.toJson(),
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [defaultModel.id],
-    );
-  }
-
-
-
-  static Future<List<DefaultModel>> getInfoByLimit(int limit) async {
-    List<DefaultModel> allToDos = [];
-    final db = await getInstance.database;
-    allToDos = (await db.query(DefaultModelFields.defaultTable,
-        limit: limit, orderBy: "${DefaultModelFields.name} ASC"))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-
-    return allToDos;
-  }
-
-  static Future<DefaultModel?> getSingleContact(int id) async {
-    List<DefaultModel> allInfo = [];
-    final db = await getInstance.database;
-    allInfo = (await db.query(
-      DefaultModelFields.defaultTable,
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [id],
-    ))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-
-    if (allInfo.isNotEmpty) {
-      return allInfo.first;
-    }
-    return allInfo.last;
-  }
-
-  static Future<List<DefaultModel>> getInfoByQuery(String query) async {
-    List<DefaultModel> allInfo = [];
-    final db = await getInstance.database;
-    allInfo = (await db.query(
-      DefaultModelFields.defaultTable,
-      where: "${DefaultModelFields.name} LIKE ?",
-      whereArgs: [query],
-    ))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-    return allInfo;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_defualt_project/data/local/storage_repository/storage_repository.dart';
 import 'package:flutter_defualt_project/provider/news_provider.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/utils/colors.dart';
@@ -18,15 +20,37 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   NewsProvider newsProvider = NewsProvider.instance;
+  bool isSubs = StorageRepository.getBool("subs");
+  checking()async{
+    isSubs? await FirebaseMessaging.instance.subscribeToTopic("news"):await FirebaseMessaging.instance.unsubscribeFromTopic("news");
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Switch(
+          onChanged: (value) {
+            isSubs = !isSubs;
+            StorageRepository.putBool("subs", isSubs);
+            setState(() {
+            checking();
+            });
+          },
+          value: isSubs,
+        ),
         title: Lottie.asset(AppImages.appBarIcon,
             height: 56.h, fit: BoxFit.fitHeight),
         centerTitle: true,
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RouteNames.pushNotificationScreen);
+              },
+              icon: Icon(
+                Icons.add,
+                size: 30.sp,
+              )),
           IconButton(
               onPressed: () {
                 showDialog(
@@ -34,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) {
                       return AlertDialog(
                         content: SizedBox(
-                          height: 110.h,
+                          height: 125.h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -179,7 +203,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 12.h,)
+                                  SizedBox(
+                                    height: 12.h,
+                                  )
                                 ],
                               ),
                               Positioned(
@@ -189,12 +215,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context
                                       .watch<NewsProvider>()
                                       .news[index]
-                                      .newsDataDatetime.substring(0,16),
+                                      .newsDataDatetime
+                                      .substring(0, 16),
                                   style: TextStyle(
-                                    color: AppColors.c_3669C9,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600
-                                  ),
+                                      color: AppColors.c_3669C9,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               )
                             ],

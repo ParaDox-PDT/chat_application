@@ -4,6 +4,7 @@ import 'package:flutter_defualt_project/data/models/news_model.dart';
 import 'package:flutter_defualt_project/ui/auth/auth_screen.dart';
 import 'package:flutter_defualt_project/ui/home/home_screen.dart';
 import 'package:flutter_defualt_project/ui/news_detail/news_detail_screen.dart';
+import 'package:flutter_defualt_project/ui/push_notification/push_notification_screen.dart';
 import 'package:flutter_defualt_project/ui/splash/splash_screen.dart';
 
 class RouteNames {
@@ -12,6 +13,7 @@ class RouteNames {
   static const String splashScreen = "/";
   static const String appScreen = "/app_screen";
   static const String newsDetail = "/news_detail";
+  static const String pushNotificationScreen = "/push_notification";
 }
 
 class AppRoutes {
@@ -20,6 +22,10 @@ class AppRoutes {
       case RouteNames.appScreen:
         return MaterialPageRoute(
           builder: (context) => const App(),
+        );
+      case RouteNames.pushNotificationScreen:
+        return MaterialPageRoute(
+          builder: (context) => const PushNotificationScreen(),
         );
       case RouteNames.newsDetail:
         return MaterialPageRoute(

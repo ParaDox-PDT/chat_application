@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_defualt_project/data/local/db/local_database.dart';
+import 'package:flutter_defualt_project/data/local/storage_repository/storage_repository.dart';
 import 'package:flutter_defualt_project/data/models/news_model.dart';
 
 import '../provider/news_provider.dart';
@@ -9,10 +10,11 @@ import 'local_notification_service.dart';
 
 Future<void> initFirebase() async {
   NewsProvider newsProvider=NewsProvider.instance;
+  bool isSubs=StorageRepository.getBool("subs");
   await Firebase.initializeApp();
   String? fcmToken = await FirebaseMessaging.instance.getToken();
   debugPrint("FCM USER TOKEN: $fcmToken");
-  await FirebaseMessaging.instance.subscribeToTopic("news");
+  isSubs? await  FirebaseMessaging.instance.subscribeToTopic("news"):await FirebaseMessaging.instance.unsubscribeFromTopic("news");
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     debugPrint(
@@ -40,6 +42,8 @@ Future<void> initFirebase() async {
       newsDataImg: message.data["image"],
       newsDataDatetime: DateTime.now().toString(),
     ),);
+    newsProvider.getNews();
+    
     debugPrint(
         "NOTIFICATION FROM TERMINATED MODE: ${message.data["title"]} va ${message.notification!.title} in terminated");
     LocalNotificationService.instance.showFlutterNotification(message);
