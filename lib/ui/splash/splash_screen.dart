@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 3));
 
     if(context.mounted){
-      Navigator.pushReplacementNamed(context, RouteNames.appScreen);
+      Navigator.pushReplacementNamed(context, RouteNames.homeScreen2);
     }
   }
 

@@ -1,13 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_defualt_project/data/firebase/auth_service.dart';
-import 'package:flutter_defualt_project/data/firebase/profile_service.dart';
-import 'package:flutter_defualt_project/provider/auth_provider.dart';
-import 'package:flutter_defualt_project/provider/profile_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_defualt_project/cubits/math_cubit/math_cubit.dart';
+import 'package:flutter_defualt_project/cubits/tab_box_cubit/tab_box_cubit.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/utils/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
+
 
 import 'data/local/storage_repository/storage_repository.dart';
 
@@ -16,26 +15,49 @@ Future<void> main() async {
   await StorageRepository.getInstance();
   await Firebase.initializeApp();
 
-  runApp(
-    MultiProvider(
+  runApp(const App());
+}
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthProvider(
-            firebaseService: AuthService(),
-          ),
+        BlocProvider(
+          create: (_) => TabBoxCubit(),
           lazy: true,
         ),
-        ChangeNotifierProvider(
-          create: (context) => ProfileProvider(
-            profileService: ProfileService(),
-          ),
+        BlocProvider(
+          create: (_) => MathCubit(),
           lazy: true,
         )
       ],
       child: const MyApp(),
-    ),
-  );
+    );
+  }
 }
+
+// runApp(
+//   MultiProvider(
+//     providers: [
+//       ChangeNotifierProvider(
+//         create: (context) => AuthProvider(
+//           firebaseService: AuthService(),
+//         ),
+//         lazy: true,
+//       ),
+//       ChangeNotifierProvider(
+//         create: (context) => ProfileProvider(
+//           profileService: ProfileService(),
+//         ),
+//         lazy: true,
+//       )
+//     ],
+//     child: const MyApp(),
+//   ),
+// );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
