@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_defualt_project/cubits/auth_cubit/auth_cubit.dart';
 import 'package:flutter_defualt_project/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: TextButton(
           onPressed: (){
-            context.read<AuthProvider>().logOutUser(context);
+            context.read<AuthCubit>().changeLoggedOutSate(context);
           },
           child: Text("Log Out",style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.black),),
         ),

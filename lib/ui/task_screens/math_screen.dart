@@ -56,7 +56,7 @@ class _MathScreenState extends State<MathScreen> {
                     if (value.isNotEmpty) {
                       context
                           .read<MathCubit>()
-                          .updateFirstNum(int.parse(value));
+                          .updateFirstNum(double.parse(value));
                     }
                   },
                   keyboardType: TextInputType.number,
@@ -73,7 +73,7 @@ class _MathScreenState extends State<MathScreen> {
                     if (value.isNotEmpty) {
                       context
                           .read<MathCubit>()
-                          .updateSecondNum(int.parse(value));
+                          .updateSecondNum(double.parse(value));
                     }
                   },
                   keyboardType: TextInputType.number,

@@ -4,17 +4,21 @@ import 'package:flutter_defualt_project/ui/auth/auth_screen.dart';
 import 'package:flutter_defualt_project/ui/home/home_screen.dart';
 import 'package:flutter_defualt_project/ui/home2/home_screen_2.dart';
 import 'package:flutter_defualt_project/ui/splash/splash_screen.dart';
+import 'package:flutter_defualt_project/ui/task_screens/login_screen.dart';
 import 'package:flutter_defualt_project/ui/task_screens/math_screen.dart';
 import 'package:flutter_defualt_project/ui/task_screens/tab_box_task/tab_box_screen.dart';
+import 'package:flutter_defualt_project/ui/task_screens/task_screen.dart';
 
 class RouteNames {
   static const String homeScreen = "/home_screen";
   static const String authScreen = "/auth_screen";
+  static const String authScreenCubit = "/auth_screen_cubit";
   static const String splashScreen = "/";
   static const String appScreen = "/app_screen";
   static const String mathScreen = "/math_screen";
   static const String tabBox = "/tab_box";
   static const String homeScreen2 = "/home2";
+  static const String task = "/task";
 }
 
 class AppRoutes {
@@ -23,6 +27,14 @@ class AppRoutes {
       case RouteNames.appScreen:
         return MaterialPageRoute(
           builder: (context) => const App(),
+        );
+      case RouteNames.authScreenCubit:
+        return MaterialPageRoute(
+          builder: (context) => const AuthScreenWithCubit(),
+        );
+      case RouteNames.task:
+        return MaterialPageRoute(
+          builder: (context) => const TaskScreen(),
         );
       case RouteNames.homeScreen2:
         return MaterialPageRoute(

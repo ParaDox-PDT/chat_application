@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_defualt_project/cubits/auth_cubit/auth_cubit.dart';
 import 'package:flutter_defualt_project/provider/auth_provider.dart';
-import 'package:flutter_defualt_project/ui/auth/auth_screen.dart';
-import 'package:flutter_defualt_project/ui/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -12,7 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-        stream: context.read<AuthProvider>().listenAuthState(),
+        stream: context.read<AuthCubit>().listenAuthState(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -22,9 +21,10 @@ class App extends StatelessWidget {
             );
 
           }else if(snapshot.data == null){
-            return AuthScreen();
+           return context.read<AuthCubit>().changeLoginState();
+
           }else{
-            return HomeScreen();
+           return context.read<AuthCubit>().changeLoggedInState(context);
           }
         },
       ),

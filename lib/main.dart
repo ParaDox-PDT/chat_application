@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_defualt_project/cubits/auth_cubit/auth_cubit.dart';
 import 'package:flutter_defualt_project/cubits/math_cubit/math_cubit.dart';
 import 'package:flutter_defualt_project/cubits/tab_box_cubit/tab_box_cubit.dart';
+import 'package:flutter_defualt_project/cubits/task_cubit/page_cubit/page_cubit.dart';
+import 'package:flutter_defualt_project/cubits/task_cubit/task_cubit.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/utils/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,11 +18,11 @@ Future<void> main() async {
   await StorageRepository.getInstance();
   await Firebase.initializeApp();
 
-  runApp(const App());
+  runApp(const Apps());
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class Apps extends StatelessWidget {
+  const Apps({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,18 @@ class App extends StatelessWidget {
           lazy: true,
         ),
         BlocProvider(
+          create: (_) => PageCubit(),
+          lazy: true,
+        ),
+        BlocProvider(
           create: (_) => MathCubit(),
+          lazy: true,
+        ),
+        BlocProvider(
+          create: (_) => TaskCubit(),
+          lazy: true,
+        ),BlocProvider(
+          create: (_) => AuthCubit(),
           lazy: true,
         )
       ],

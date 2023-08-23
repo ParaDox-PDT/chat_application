@@ -6,12 +6,12 @@ import 'package:flutter_defualt_project/cubits/math_cubit/math_state.dart';
 class MathCubit extends Cubit<MathState> {
   MathCubit() : super(MathState());
 
-  updateFirstNum(int newNum) {
+  updateFirstNum(double newNum) {
     emit(state.copyWith(firstNum: newNum));
     updateAnswer();
   }
 
-  updateSecondNum(int newNum) {
+  updateSecondNum(double newNum) {
     emit(state.copyWith(secondNum: newNum));
     updateAnswer();
   }
@@ -19,7 +19,7 @@ class MathCubit extends Cubit<MathState> {
   updateAnswer() {
     emit(
       state.copyWith(
-        answer: pow(state.firstNum, state.secondNum).toInt()
+        answer: pow(state.firstNum, state.secondNum).toString()
       ),
     );
   }

@@ -1,18 +1,18 @@
 class MathState {
-  final int firstNum;
-  final int secondNum;
-  final int answer;
+  final double firstNum;
+  final double secondNum;
+  final String answer;
 
   MathState({
     this.firstNum = 0,
     this.secondNum = 0,
-    this.answer = 0,
+    this.answer = "0",
   });
 
   MathState copyWith({
-    int? firstNum,
-    int? secondNum,
-    int? answer,
+    double? firstNum,
+    double? secondNum,
+    String? answer,
   }) =>
       MathState(
         firstNum: firstNum ?? this.firstNum,
@@ -21,9 +21,9 @@ class MathState {
       );
 
   factory MathState.fromJson(Map<String, dynamic> json) => MathState(
-    firstNum: json["firstNum"] as int? ?? 0,
-    secondNum: json["secondNum"] as int? ?? 0,
-    answer: json["answer"] as int? ?? 0,
+    firstNum: json["firstNum"] as double? ?? 0,
+    secondNum: json["secondNum"] as double? ?? 0,
+    answer: json["answer"] as String? ?? "0",
   );
 
   @override

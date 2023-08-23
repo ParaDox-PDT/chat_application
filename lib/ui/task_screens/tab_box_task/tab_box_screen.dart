@@ -19,7 +19,6 @@ class _TabBoxScreenState extends State<TabBoxScreen> {
       body: BlocBuilder<TabBoxCubit, TabBoxState>(
         builder: (context, state) {
           return state.currentScreen;
-
         },
       ),
       bottomNavigationBar: BottomNavigationBar(

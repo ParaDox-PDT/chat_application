@@ -55,10 +55,23 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(height: 30.h,),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, RouteNames.mathScreen);
+                Navigator.pushNamed(context, RouteNames.authScreenCubit);
               },
               child: Text(
                 "Login task",
+                style: TextStyle(
+                    fontSize: 28.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+            SizedBox(height: 30.h,),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RouteNames.task);
+              },
+              child: Text(
+                "Task",
                 style: TextStyle(
                     fontSize: 28.sp,
                     color: Colors.black,
