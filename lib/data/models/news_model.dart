@@ -7,7 +7,7 @@ class NewsModelFields{
   static const String newsDataImg="newsDataImg";
   static const String newsDataDatetime="newsDataDatetime";
 
-  static const String newsTable = "newstable";
+  static const String newsTable = "newsTable";
 }
 
 class NewsModel {

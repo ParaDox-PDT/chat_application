@@ -1,19 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_defualt_project/cubits/news_cubit/news_cubit.dart';
 import 'package:flutter_defualt_project/data/models/news_model.dart';
-import 'package:flutter_defualt_project/provider/news_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:provider/provider.dart';
+
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class NewsDetailScreen extends StatelessWidget {
-  NewsDetailScreen({super.key, required this.newsModel, required this.index});
+  const NewsDetailScreen({super.key, required this.newsModel, required this.index});
 
   final NewsModel newsModel;
   final int index;
-
-  final NewsProvider newsProvider = NewsProvider.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +63,7 @@ class NewsDetailScreen extends StatelessWidget {
                                 TextButton(
                                     onPressed: () {
                                       context
-                                          .read<NewsProvider>()
+                                          .read<NewsCubit>()
                                           .deleteNews(id: newsModel.id ?? 0);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(

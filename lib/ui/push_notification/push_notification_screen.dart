@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_defualt_project/provider/post_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_defualt_project/cubits/post_notification_cubit/post_notification_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../utils/colors.dart';
@@ -16,6 +16,9 @@ class PushNotificationScreen extends StatefulWidget {
 
 class _PushNotificationScreenState extends State<PushNotificationScreen> {
   ImagePicker picker = ImagePicker();
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +34,29 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
             children: [
               TextField(
                 style: const TextStyle(color: Colors.black),
-                controller: context.watch<PostProvider>().titleController,
+                controller: titleController,
                 decoration: InputDecoration(
                   hintText: "Title",
                   focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                 ),
               ),
               SizedBox(
@@ -56,24 +64,29 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
               ),
               TextField(
                 style: const TextStyle(color: Colors.black),
-                controller: context.watch<PostProvider>().descriptionController,
+                controller: descController,
                 decoration: InputDecoration(
                   hintText: "Description",
                   focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                   disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(width: 1, color: Colors.black)),
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.black)),
                 ),
               ),
               SizedBox(
@@ -90,14 +103,18 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                       borderRadius: BorderRadius.circular(10.r),
                       color: AppColors.c_3669C9),
                   child: Center(
-                    child: context.watch<PostProvider>().imgUrl.isEmpty
+                    child: context
+                            .watch<PostNotificationCubit>()
+                            .imageUrl
+                            .isEmpty
                         ? const Text(
                             "Image Not Selected",
                             style: TextStyle(color: Colors.black),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )
-                        : Image.network(context.watch<PostProvider>().imgUrl),
+                        : Image.network(
+                            context.watch<PostNotificationCubit>().imageUrl),
                   ),
                 ),
               ),
@@ -106,39 +123,36 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
               ),
               ZoomTapAnimation(
                 onTap: () {
-                  if (context
-                          .read<PostProvider>()
-                          .titleController
-                          .text
-                          .isNotEmpty &&
+                  if (titleController.text.isNotEmpty &&
+                      descController.text.isNotEmpty &&
                       context
-                          .read<PostProvider>()
-                          .descriptionController
-                          .text
-                          .isNotEmpty &&
-                      context.read<PostProvider>().imgUrl.isNotEmpty) {
-                    context.read<PostProvider>().postNotification();
+                          .read<PostNotificationCubit>()
+                          .imageUrl
+                          .isNotEmpty) {
+                    context.read<PostNotificationCubit>().postNotification(
+                        title: titleController.text,
+                        description: descController.text);
                     Navigator.pop(context);
                   } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(milliseconds: 700),
-                          backgroundColor: Colors.red,
-                          margin: EdgeInsets.symmetric(
-                            vertical: 100,
-                            horizontal: 20,
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            "Maydonlari to'ldiring!!!",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22,
-                            ),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(milliseconds: 700),
+                        backgroundColor: Colors.red,
+                        margin: EdgeInsets.symmetric(
+                          vertical: 100,
+                          horizontal: 20,
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Maydonlari to'ldiring!!!",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
                           ),
                         ),
-                      );
+                      ),
+                    );
                   }
                 },
                 child: Container(
@@ -219,8 +233,10 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     );
 
     if (xFile != null) {
-      await Provider.of<PostProvider>(context, listen: false)
-          .uploadCategoryImage(context, xFile);
+      if (context.mounted) {
+        await BlocProvider.of<PostNotificationCubit>(context, listen: false)
+            .uploadCategoryImage(context, xFile);
+      }
     }
   }
 
@@ -231,8 +247,10 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       maxWidth: 512,
     );
     if (xFile != null) {
-      await Provider.of<PostProvider>(context, listen: false)
-          .uploadCategoryImage(context, xFile);
+      if (context.mounted) {
+        await BlocProvider.of<PostNotificationCubit>(context, listen: false)
+            .uploadCategoryImage(context, xFile);
+      }
     }
   }
 }

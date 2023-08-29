@@ -1,15 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_defualt_project/data/local/db/local_database.dart';
+import 'package:flutter_defualt_project/cubits/news_cubit/news_cubit.dart';
 import 'package:flutter_defualt_project/data/local/storage_repository/storage_repository.dart';
 import 'package:flutter_defualt_project/data/models/news_model.dart';
 
-import '../provider/news_provider.dart';
 import 'local_notification_service.dart';
 
 Future<void> initFirebase() async {
-  NewsProvider newsProvider=NewsProvider.instance;
+  NewsCubit newsCubit = NewsCubit.instance;
   bool isSubs=StorageRepository.getBool("subs");
   await Firebase.initializeApp();
   String? fcmToken = await FirebaseMessaging.instance.getToken();
@@ -20,7 +19,7 @@ Future<void> initFirebase() async {
     debugPrint(
         "NOTIFICATION FOREGROUND MODE: ${message.data["title"]} va ${message.notification!.title} in foreground");
     LocalNotificationService.instance.showFlutterNotification(message);
-    newsProvider.insertNews(newsModel: NewsModel(
+    newsCubit.insertNews(newsModel: NewsModel(
       newsTitle: message.notification?.title ?? "",
       newsBody: message.notification?.body ?? "",
       newsDataTitle: message.data["title"],
@@ -28,13 +27,13 @@ Future<void> initFirebase() async {
       newsDataImg: message.data["image"],
       newsDataDatetime: DateTime.now().toString(),
     ),);
-    newsProvider.getNews();
+    newsCubit.getNews();
   });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   handelMessage(RemoteMessage message) {
-    newsProvider.insertNews(newsModel: NewsModel(
+    newsCubit.insertNews(newsModel: NewsModel(
       newsTitle: message.notification?.title ?? "",
       newsBody: message.notification?.body ?? "",
       newsDataTitle: message.data["title"],
@@ -42,7 +41,7 @@ Future<void> initFirebase() async {
       newsDataImg: message.data["image"],
       newsDataDatetime: DateTime.now().toString(),
     ),);
-    newsProvider.getNews();
+    newsCubit.getNews();
     
     debugPrint(
         "NOTIFICATION FROM TERMINATED MODE: ${message.data["title"]} va ${message.notification!.title} in terminated");
@@ -61,10 +60,10 @@ Future<void> initFirebase() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  NewsProvider newsProvider = NewsProvider.instance;
+  NewsCubit newsCubit = NewsCubit.instance;
   await Firebase.initializeApp();
   LocalNotificationService.instance.showFlutterNotification(message);
-  newsProvider.insertNews(newsModel: NewsModel(
+  newsCubit.insertNews(newsModel: NewsModel(
     newsTitle: message.notification?.title ?? "",
     newsBody: message.notification?.body ?? "",
     newsDataTitle: message.data["title"],
@@ -72,7 +71,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     newsDataImg: message.data["image"],
     newsDataDatetime: DateTime.now().toString(),
   ),);
-  newsProvider.getNews();
+  newsCubit.getNews();
   debugPrint(
       "NOTIFICATION BACKGROUND MODE: ${message.data["title"]} va ${message.notification!.title} in background");
 }

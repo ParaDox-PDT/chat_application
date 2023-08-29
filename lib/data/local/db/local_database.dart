@@ -3,8 +3,6 @@ import 'package:flutter_defualt_project/data/models/news_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../models/default_model.dart';
-
 class LocalDatabase{
   static final LocalDatabase getInstance = LocalDatabase._init();
 
